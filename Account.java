@@ -8,6 +8,12 @@ import java.util.Random;
 public class Account
 {
     // instance variables
+    final double maxWithdrawSavings = 5000;
+    final double maxWithdrawEveryday = 5000;
+    final double maxWithdrawCurrent = 5000;
+    final double minBalanceCurrent = -1000;
+    final double minBalanceEveryday = 0;
+    final double minBalanceSavings = 0;
     private String name;
     private String adress;
     private String accNumber;
@@ -31,16 +37,16 @@ public class Account
         
         switch(this.accType){
             case "Current":
-                this.minBalance = -1000;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceCurrent;
+                this.maxWithdraw = maxWithdrawCurrent;
                 break;
             case "Savings":
-                this.minBalance = 0;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceSavings;
+                this.maxWithdraw = maxWithdrawSavings;
                 break;
             case "Everyday":
-                this.minBalance = 0;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceEveryday;
+                this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
         
@@ -49,23 +55,23 @@ public class Account
     {
         this.name = name;
         this.adress = adress;
-        this.accNumber = generateAccNumber();
+        this.accNumber = generateAccountNumber();
         this.accType = accType;
         this.balance = 0;
         this.active = true;
         
         switch(this.accType){
             case "Current":
-                this.minBalance = -1000;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceCurrent;
+                this.maxWithdraw = maxWithdrawCurrent;
                 break;
             case "Savings":
-                this.minBalance = 0;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceSavings;
+                this.maxWithdraw = maxWithdrawSavings;
                 break;
             case "Everyday":
-                this.minBalance = 0;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceEveryday;
+                this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
         
@@ -77,16 +83,16 @@ public class Account
         
         switch(this.accType){
             case "Current":
-                this.minBalance = -1000;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceCurrent;
+                this.maxWithdraw = maxWithdrawCurrent;
                 break;
             case "Savings":
-                this.minBalance = 0;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceSavings;
+                this.maxWithdraw = maxWithdrawSavings;
                 break;
             case "Everyday":
-                this.minBalance = 0;
-                this.maxWithdraw = 5000;
+                this.minBalance = minBalanceEveryday;
+                this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
         
@@ -116,14 +122,10 @@ public class Account
     public double getBalance(){
         return(this.balance);
     }
-    public void changeState(){
-        if(this.active = false){
-            this.active = true;
-        }else if(this.active = true){
-            this.active = false;
-        }
+    public void setState(boolean State){
+        this.active = State;
     }
-    public String generateAccNumber(){
+    public String generateAccountNumber(){
         Random random = new Random();
         String accNumber = random.nextInt(100) + "-" + random.nextInt(10000) + "-" + random.nextInt(10000000) + "-" + random.nextInt(100);
         return accNumber;
