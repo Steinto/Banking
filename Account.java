@@ -1,10 +1,10 @@
-
 /**
  * Class for accounts
  *
  * Toby S
  * 31/03/2025
  */
+import java.util.Random;
 public class Account
 {
     // instance variables
@@ -14,10 +14,9 @@ public class Account
     private String accType;
     private double balance;
     private boolean active;
-    double minBalanceSavings = 0;
-    double minBalanceEveryday = 0;
-    double minBalanceCurrent = -1000;
-
+    private double minBalance;
+    private double maxWithdraw;
+    
     /**
      * Constructor for objects of class Account
      */
@@ -30,17 +29,77 @@ public class Account
         this.balance = balance;
         this.active = true;
         
+        switch(this.accType){
+            case "Current":
+                this.minBalance = -1000;
+                this.maxWithdraw = 5000;
+                break;
+            case "Savings":
+                this.minBalance = 0;
+                this.maxWithdraw = 5000;
+                break;
+            case "Everyday":
+                this.minBalance = 0;
+                this.maxWithdraw = 5000;
+                break;
+        }
+        
     }
-
+    public Account(String name, String adress, String accType)
+    {
+        this.name = name;
+        this.adress = adress;
+        this.accNumber = generateAccNumber();
+        this.accType = accType;
+        this.balance = 0;
+        this.active = true;
+        
+        switch(this.accType){
+            case "Current":
+                this.minBalance = -1000;
+                this.maxWithdraw = 5000;
+                break;
+            case "Savings":
+                this.minBalance = 0;
+                this.maxWithdraw = 5000;
+                break;
+            case "Everyday":
+                this.minBalance = 0;
+                this.maxWithdraw = 5000;
+                break;
+        }
+        
+    }
+    public Account(String accType)
+    {
+        this.accType = accType;
+        this.active = false;
+        
+        switch(this.accType){
+            case "Current":
+                this.minBalance = -1000;
+                this.maxWithdraw = 5000;
+                break;
+            case "Savings":
+                this.minBalance = 0;
+                this.maxWithdraw = 5000;
+                break;
+            case "Everyday":
+                this.minBalance = 0;
+                this.maxWithdraw = 5000;
+                break;
+        }
+        
+    }
+    
+    public double getMaxWithdraw(){
+        return(this.maxWithdraw);
+    }
+    public double getMinBalance(){
+        return(this.minBalance);
+    }
     public boolean getState(){
         return(this.active);
-    }
-    public void changeState(){
-        if(this.active = false){
-            this.active = true;
-        }else if(this.active = true){
-            this.active = false;
-        }
     }
     public String getName(){
         return(this.name);
@@ -57,32 +116,26 @@ public class Account
     public double getBalance(){
         return(this.balance);
     }
+    public void changeState(){
+        if(this.active = false){
+            this.active = true;
+        }else if(this.active = true){
+            this.active = false;
+        }
+    }
+    public String generateAccNumber(){
+        Random random = new Random();
+        String accNumber = random.nextInt(100) + "-" + random.nextInt(10000) + "-" + random.nextInt(10000000) + "-" + random.nextInt(100);
+        return accNumber;
+    }
     public void deposit(double depositAmmount){
         this.balance = this.balance + depositAmmount;
     }
     public void withdraw(double withdrawAmmount){
-        switch(this.accType){
-            case "Current":
-                if((this.balance - withdrawAmmount) > this.minBalanceCurrent){
-                    this.balance = this.balance - withdrawAmmount;
-                }else{
-                    System.out.println("your withdrawl is invalid");
-                }
-                break;
-            case "Savings":
-                if((this.balance - withdrawAmmount) > this.minBalanceSavings){
-                    this.balance = this.balance - withdrawAmmount;
-                }else{
-                    System.out.println("your withdrawl is invalid");
-                }
-                break;
-            case "Everyday":
-                if((this.balance - withdrawAmmount) > this.minBalanceEveryday){
-                    this.balance = this.balance - withdrawAmmount;
-                }else{
-                    System.out.println("your withdrawl is invalid");
-                }
-                break;
+        if((this.balance - withdrawAmmount) > this.minBalance){
+            this.balance = this.balance - withdrawAmmount;
+        }else{
+            System.out.println("your withdrawl is invalid");
         }
     }
 }
