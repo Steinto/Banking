@@ -22,7 +22,8 @@ public class Account
     private boolean active;
     private double minBalance;
     private double maxWithdraw;
-    
+    private double totalTransactions = 0.0;
+
     /**
      * Constructor for objects of class Account
      */
@@ -34,7 +35,7 @@ public class Account
         this.accType = accType;
         this.balance = balance;
         this.active = true;
-        
+
         switch(this.accType){
             case "Current":
                 this.minBalance = minBalanceCurrent;
@@ -49,8 +50,9 @@ public class Account
                 this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
-        
+
     }
+
     public Account(String name, String adress, String accType)
     {
         this.name = name;
@@ -59,7 +61,7 @@ public class Account
         this.accType = accType;
         this.balance = 0;
         this.active = true;
-        
+
         switch(this.accType){
             case "Current":
                 this.minBalance = minBalanceCurrent;
@@ -74,13 +76,14 @@ public class Account
                 this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
-        
+
     }
+
     public Account(String accType)
     {
         this.accType = accType;
         this.active = false;
-        
+
         switch(this.accType){
             case "Current":
                 this.minBalance = minBalanceCurrent;
@@ -95,46 +98,67 @@ public class Account
                 this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
-        
+
     }
-    
+
     public double getMaxWithdraw(){
         return(this.maxWithdraw);
     }
+
     public double getMinBalance(){
         return(this.minBalance);
     }
+
     public boolean getState(){
         return(this.active);
     }
+
     public String getName(){
         return(this.name);
     }
+
     public String getAdress(){
         return(this.adress);
     }
+
     public String getAccNumber(){
         return(this.accNumber);
     }
+
     public String getAccType(){
         return(this.accType);
     }
+
     public double getBalance(){
         return(this.balance);
     }
+    
+    public double getTotalTransactions(){
+        return(this.totalTransactions);
+    }
+
     public void setState(boolean State){
         this.active = State;
     }
+
     public String generateAccountNumber(){
         Random random = new Random();
         String accNumber = random.nextInt(100) + "-" + random.nextInt(10000) + "-" + random.nextInt(10000000) + "-" + random.nextInt(100);
         return accNumber;
     }
+
     public void deposit(double depositAmmount){
-        this.balance = this.balance + depositAmmount;
+        if(depositAmmount < this.maxWithdraw && depositAmmount > 0){
+            this.totalTransactions = this.totalTransactions + depositAmmount;
+            this.balance = this.balance + depositAmmount;
+        }else{
+            System.out.println("your deposit is invalid");
+        }
     }
+
     public void withdraw(double withdrawAmmount){
         if((this.balance - withdrawAmmount) > this.minBalance){
+            this.totalTransactions = this.totalTransactions - withdrawAmmount;
             this.balance = this.balance - withdrawAmmount;
         }else{
             System.out.println("your withdrawl is invalid");

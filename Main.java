@@ -1,8 +1,8 @@
 /**
- * Write a description of class Main here.
+ * kicks off program
  *
- * @author (your name)
- * @version (a version number or a date)
+ * Toby S
+ * 02/04/2025
  */
 public class Main
 {
