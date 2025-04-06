@@ -8,6 +8,7 @@ import java.util.Random;
 public class Account
 {
     // instance variables
+    final String branchNumber = "0101";
     final double maxWithdrawSavings = 5000;
     final double maxWithdrawEveryday = 5000;
     final double maxWithdrawCurrent = 5000;
@@ -143,7 +144,7 @@ public class Account
 
     public String generateAccountNumber(){
         Random random = new Random();
-        String accNumber = random.nextInt(100) + "-" + random.nextInt(10000) + "-" + random.nextInt(10000000) + "-" + random.nextInt(100);
+        String accNumber = "08-" + this.branchNumber + "-" + random.nextInt(10000000) + "-00";
         return accNumber;
     }
 

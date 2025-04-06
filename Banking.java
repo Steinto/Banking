@@ -32,7 +32,6 @@ public class Banking
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        // accounts = Load();
         read();
 
         while(cont){
@@ -76,11 +75,11 @@ public class Banking
         boolean contTurn = true;
         System.out.println("please enter account number of the account the customer wants to \ninquire about, including hyphens e.g. XX-XXXX-XXXXXXX-XX\nTo start with a new customer, input 'exit'");
         String accNumber = keyboard.nextLine();
-        
+
         if(accNumber.equals("exit")){
             contTurn = false;
         }
-        
+
         int account = findAccounts(name, accNumber);
         while(contTurn) {
 
@@ -148,12 +147,12 @@ public class Banking
 
                 //add verification of data
                 accounts.add(new Account(name, adress, accountType));
-                System.out.println("that follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\n" + accounts.get(accounts.size() - 1).getAccNumber());
-
+                System.out.println("what follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\n" + accounts.get(accounts.size() - 1).getAccNumber());
+                keyboard.nextLine();// change
                 memberTurn(name);
                 break;
             case "no":
-                System.out.println("if you dont want to open an account\nwe can help you today");
+                System.out.println("if you dont want to open an account\nwe cant help you today");
                 break;
         }
 
@@ -184,18 +183,19 @@ public class Banking
         try{
             FileWriter myWriter = new FileWriter(bankData);
             for(int i = 0; i < accounts.size(); i++){
-                System.out.println("hiiiiiiiiiii");
-                myWriter.write("wsg");
-                myWriter.write(accounts.get(i).getName() + "," + accounts.get(i).getAdress());
+                myWriter.write(accounts.get(i).getName() + ",");
+                myWriter.write(accounts.get(i).getAdress() + ",");
+                myWriter.write(accounts.get(i).getAccNumber() + ",");
+                myWriter.write(accounts.get(i).getAccType() + ",");
+                myWriter.write(accounts.get(i).getBalance() + "\n");
             }
-            
             myWriter.flush();
             myWriter.close();
         }catch(IOException e){
             System.out.println("error couldnt write to file");
         }
-
     }
+
     public void read(){
         try{
             File myFile = new File("bankData - bankData.csv");
@@ -228,5 +228,32 @@ public class Banking
         for(int i = 0 ; i < arrL.size();  i++){
             System.out.println(arrL.get(i).getBalance());
         }
+    }
+
+    public int checkInt(String msg, int expectedInput){
+        boolean cont = true;
+        int input1 = 0;
+        while(cont){
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println(msg);
+            String input = keyboard.nextLine();
+            Scanner scanner = new Scanner(input);
+            
+            try {
+                // Attempt to parse the input string to an integer
+                input1 = Integer.parseInt(input);
+                System.out.println(input1 + " is a valid integer");
+                
+                if(input1 == expectedInput){
+                    cont = false;
+                }else{
+                    System.out.println("this is not a valid answer");
+                }
+            } catch (NumberFormatException e) {
+                // If parsing fails, the input is not a valid integer
+                System.out.println(input + " is not a valid integer, please re enter");
+            }
+        }
+        return input1;
     }
 }
