@@ -35,9 +35,26 @@ public class Banking
         read();
 
         while(cont){
-            // System.out.print('\u000C');
-            System.out.println("Enter first and last legal name of customer below, including capitals.\nEnter 'exit' to print the end of day report and stop program ");
-            String name = keyboard.nextLine();
+            System.out.print('\u000C');
+            String name = "";
+            // check if it is a legal name
+            boolean containsComma = true;
+            while(containsComma){
+                System.out.println("Enter first and last legal name of customer below, including capitals.\nDo not enter commas\nEnter 'exit' to print the end of day report and stop program ");
+                name = keyboard.nextLine();
+
+                // > 2 words
+                // at least 2 letters
+
+                // over 70 cahr
+                // contains numbers
+                // contains special characters
+
+                containsComma = name.contains(",");
+                if(containsComma){
+                    System.out.println("contains comma please re-enter");
+                }
+            }
             if(name.equals("exit")){
                 double[] report = generateReport();
                 System.out.println(report[0]);
@@ -70,92 +87,126 @@ public class Banking
 
     public void memberTurn(String name){
         System.out.print('\u000C');
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("Customer: " + name);
-        boolean contTurn = true;
-        System.out.println("please enter account number of the account the customer wants to \ninquire about, including hyphens e.g. XX-XXXX-XXXXXXX-XX\nTo start with a new customer, input 'exit'");
-        String accNumber = keyboard.nextLine();
+        boolean turn = true;
+        while(turn){
 
-        if(accNumber.equals("exit")){
-            contTurn = false;
-        }
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println("Customer: " + name);
+            boolean contTurn = true;
 
-        int account = findAccounts(name, accNumber);
-        while(contTurn) {
+            System.out.println("please enter account number of the account the customer wants to \ninquire about, including hyphens e.g. XX-XXXX-XXXXXXX-XX\nTo start with a new customer, input 'exit'");
+            String accNumber = keyboard.nextLine();
 
-            // System.out.println(acc);
-            if(account > -1){
-                System.out.println("please enter nunmber corrsponding to the action you want to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer");
-                int action = keyboard.nextInt();
-                switch(action) {
-                    case 1:
-                        // System.out.println(account);
-                        System.out.println(accounts.get(account).getBalance());
-                        break;
-                    case 2:
-                        System.out.println("please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places");
-                        double withdrawalAmmount = keyboard.nextDouble();
-                        accounts.get(account).withdraw(withdrawalAmmount);
-                        break;
-                    case 3:
-                        System.out.println("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places");
-                        double depositAmmount = keyboard.nextDouble();
-                        accounts.get(account).deposit(depositAmmount);
-                        break;
-                    case 4:
-                        accounts.get(account).setState(false);
-                        break;
-                    case 5:
-                        contTurn = false;
-                        break;
-                    default:
+            if(accNumber.equals("exit")){
+                contTurn = false;
+                turn = false;
+            }
+
+            int account = findAccounts(name, accNumber);
+            while(contTurn) {
+
+                // System.out.println(acc);
+                if(account > -1){
+                    int action = checkInt("please enter nunmber corrsponding to the action you want to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer", 5);
+                    // System.out.println("please enter nunmber corrsponding to the action you want to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer");
+                    // int action = keyboard.nextInt();
+                    switch(action) {
+                        case 1:
+                            // System.out.println(account);
+                            System.out.println(accounts.get(account).getBalance());
+                            break;
+                        case 2:
+                            System.out.println("please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places");
+                            double withdrawalAmmount = keyboard.nextDouble();
+                            accounts.get(account).withdraw(withdrawalAmmount);
+                            break;
+                        case 3:
+                            System.out.println("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places");
+                            double depositAmmount = keyboard.nextDouble();
+                            accounts.get(account).deposit(depositAmmount);
+                            break;
+                        case 4:
+                            accounts.get(account).setState(false);
+                            accounts.remove(account);
+                            contTurn = false;
+                            turn = false;
+
+                            break;
+                        case 5:
+                            contTurn = false;
+                            turn = false;
+                            break;
+                        default:
+                    }
+                }else{
+                    System.out.println("not a valid account number\nPlease re-enter");
+                    contTurn = false;
                 }
-            }else{
-                System.out.println("not a valid account number\nPlease re-enter");
             }
         }
-
     }
 
     public void nonMemberTurn(String name){
         Scanner keyboard = new Scanner(System.in);
         System.out.print('\u000C');
-        System.out.println("Customer: " + name);
-        System.out.println("It seems you don't currently have an account with us.\nWould you like to open one?\nEnter 'yes' to make a new account\nor 'no' to start with a new customer");
-        String action = keyboard.nextLine();
-        switch(action) {
-            case "yes":
-                System.out.println("please enter full adress e.g. x example street");
-                String adress = keyboard.nextLine();
-                System.out.println("please enter the number coresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw());
-                System.out.println("2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw());
-                System.out.println("3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw());
-                int accountTypeAction = keyboard.nextInt();
-                String accountType = " ";
-                switch(accountTypeAction) {
-                    case 1:
-                        accountType = "Savings";
-                        break;
-                    case 2:
-                        accountType = "Current";
-                        break;
-                    case 3:
-                        accountType = "Everyday";
-                        break;
+        boolean turn = true;
+        while(turn){
+            System.out.println("Customer: " + name);
+            System.out.println("It seems you don't currently have an account with us.\nWould you like to open one?\nEnter 'yes' to make a new account\nor 'no' to start with a new customer");
+            String action = keyboard.nextLine();
+            switch(action) {
+                case "yes":
+                    
+                    // check for valid street name
+                    String adress = "";
+                    boolean containsComma = true;
+                    while(containsComma){
+                        System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
+                        adress = keyboard.nextLine();
+                        containsComma = adress.contains(",");
+                        if(containsComma){
+                            System.out.println("contains comma please re-enter");
+                        }
+                    }
 
-                }
+                
+                    // System.out.println("please enter full adress e.g. x example street");
+                    // String adress = keyboard.nextLine();
+                    // System.out.println("please enter the number coresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw());
+                    // System.out.println("2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw());
+                    // System.out.println("3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw());
+                    // int accountTypeAction = keyboard.nextInt();
+                    int accountTypeAction = checkInt("please enter the number coresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw() + "\n2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw() + "\n3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw(), 3);
+                    String accountType = " ";
+                    switch(accountTypeAction) {
+                        case 1:
+                            accountType = "Savings";
+                            break;
+                        case 2:
+                            accountType = "Current";
+                            break;
+                        case 3:
+                            accountType = "Everyday";
+                            break;
 
-                //add verification of data
-                accounts.add(new Account(name, adress, accountType));
-                System.out.println("what follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\n" + accounts.get(accounts.size() - 1).getAccNumber());
-                keyboard.nextLine();// change
-                memberTurn(name);
-                break;
-            case "no":
-                System.out.println("if you dont want to open an account\nwe cant help you today");
-                break;
+                    }
+
+                    //add verification of data
+                    accounts.add(new Account(name, adress, accountType));
+                    System.out.println("what follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\nPlease enter anything to move on\n" + accounts.get(accounts.size() - 1).getAccNumber());
+                    keyboard.nextLine();// change
+                    memberTurn(name);
+                    turn = false;
+                    break;
+                case "no":
+                    System.out.println("if you dont want to open an account\nwe cant help you today");
+                    turn = false;
+                    break;
+                default:
+                    System.out.println("Error please re-enter");
+                    break;
+            }
         }
-
     }
 
     public int findAccounts(String name, String accNum){
@@ -230,7 +281,14 @@ public class Banking
         }
     }
 
-    public int checkInt(String msg, int expectedInput){
+    public boolean checkComma(String msg){
+        boolean comma = false;
+
+        
+        return comma;
+    }
+
+    public int checkInt(String msg, int expectedInputRange){
         boolean cont = true;
         int input1 = 0;
         while(cont){
@@ -238,13 +296,13 @@ public class Banking
             System.out.println(msg);
             String input = keyboard.nextLine();
             Scanner scanner = new Scanner(input);
-            
+
             try {
                 // Attempt to parse the input string to an integer
                 input1 = Integer.parseInt(input);
                 System.out.println(input1 + " is a valid integer");
-                
-                if(input1 == expectedInput){
+
+                if(input1 <= expectedInputRange && input1 > 0){
                     cont = false;
                 }else{
                     System.out.println("this is not a valid answer");
