@@ -38,9 +38,11 @@ public class Banking
             System.out.print('\u000C');
             String name = "";
             // check if it is a legal name
-            boolean containsComma = true;
-            while(containsComma){
+            boolean legalName = false;
+            while(legalName == false){
+
                 System.out.println("Enter first and last legal name of customer below, including capitals.\nDo not enter commas\nEnter 'exit' to print the end of day report and stop program ");
+
                 name = keyboard.nextLine();
 
                 // > 2 words
@@ -49,11 +51,9 @@ public class Banking
                 // over 70 cahr
                 // contains numbers
                 // contains special characters
+                legalName = legalNameCheck(name);
 
-                containsComma = name.contains(",");
-                if(containsComma){
-                    System.out.println("contains comma please re-enter");
-                }
+                System.out.println("not a legal full name please re-enter");
             }
             if(name.equals("exit")){
                 double[] report = generateReport();
@@ -156,7 +156,7 @@ public class Banking
             String action = keyboard.nextLine();
             switch(action) {
                 case "yes":
-                    
+
                     // check for valid street name
                     String adress = "";
                     boolean containsComma = true;
@@ -169,7 +169,6 @@ public class Banking
                         }
                     }
 
-                
                     // System.out.println("please enter full adress e.g. x example street");
                     // String adress = keyboard.nextLine();
                     // System.out.println("please enter the number coresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw());
@@ -207,6 +206,31 @@ public class Banking
                     break;
             }
         }
+    }
+
+    public boolean legalNameCheck(String name){
+
+        List<String> names = Arrays.asList(name.split(" "));
+        if(names.size() < 2){
+            return false;
+        }
+        for (int i = 0; i < names.size(); i++){
+            if(names.get(i).length() > 70 || names.get(i).length() < 3){
+                return false;
+            }
+        }
+
+        for (int i = 0; i < names.size(); i++){
+            if (names.get(i) == null){
+                return false;
+            }
+            for (int j = 0; j < names.get(i).length(); j++){
+                if((Character.isLetter(names.get(i).charAt(j))) == false){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public int findAccounts(String name, String accNum){
@@ -284,7 +308,6 @@ public class Banking
     public boolean checkComma(String msg){
         boolean comma = false;
 
-        
         return comma;
     }
 
