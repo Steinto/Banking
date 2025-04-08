@@ -133,7 +133,7 @@ public class Account
     public double getBalance(){
         return(this.balance);
     }
-    
+
     public double getTotalTransactions(){
         return(this.totalTransactions);
     }
@@ -149,6 +149,10 @@ public class Account
     }
 
     public void deposit(double depositAmmount){
+        depositAmmount = depositAmmount * 100;
+        depositAmmount = Math.floor(depositAmmount);
+        depositAmmount = depositAmmount / 100;
+        System.out.println(depositAmmount);
         if(depositAmmount < this.maxWithdraw && depositAmmount > 0){
             this.totalTransactions = this.totalTransactions + depositAmmount;
             this.balance = this.balance + depositAmmount;
@@ -158,6 +162,10 @@ public class Account
     }
 
     public void withdraw(double withdrawAmmount){
+        withdrawAmmount = withdrawAmmount * 100;
+        withdrawAmmount = Math.floor(withdrawAmmount);
+        withdrawAmmount = withdrawAmmount / 100;
+        System.out.println(withdrawAmmount);
         if((this.balance - withdrawAmmount) > this.minBalance){
             this.totalTransactions = this.totalTransactions - withdrawAmmount;
             this.balance = this.balance - withdrawAmmount;

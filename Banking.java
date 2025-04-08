@@ -45,16 +45,19 @@ public class Banking
                 System.out.println("Enter first and last legal name of customer below, including capitals.\nDo not enter commas\nEnter 'exit' to print the end of day report and stop program ");
 
                 name = keyboard.nextLine();
+                if(name.equals("exit")){
+                    legalName = true;
+                }else{
+                    // > 2 words
+                    // at least 2 letters
 
-                // > 2 words
-                // at least 2 letters
+                    // over 70 cahr
+                    // contains numbers
+                    // contains special characters
+                    legalName = legalNameCheck(name);
 
-                // over 70 cahr
-                // contains numbers
-                // contains special characters
-                legalName = legalNameCheck(name);
-
-                System.out.println("not a legal full name please re-enter");
+                    System.out.println("not a legal full name please re-enter");
+                }
             }
             if(name.equals("exit")){
                 double[] report = generateReport();
@@ -160,12 +163,12 @@ public class Banking
                     String adress = "";
                     // boolean containsComma = true;
                     // while(containsComma){
-                        // System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
-                        // adress = keyboard.nextLine();
-                        // containsComma = adress.contains(",");
-                        // if(containsComma){
-                            // System.out.println("contains comma please re-enter");
-                        // }
+                    // System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
+                    // adress = keyboard.nextLine();
+                    // containsComma = adress.contains(",");
+                    // if(containsComma){
+                    // System.out.println("contains comma please re-enter");
+                    // }
                     // }
 
                     boolean legalAdress = false;
@@ -173,7 +176,7 @@ public class Banking
 
                         System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
                         adress = keyboard.nextLine();
-                        legalAdress = legalAdressCheck(name);
+                        legalAdress = legalAdressCheck(adress);
 
                         System.out.println("not a legal adress please re-enter");
                     }
@@ -201,7 +204,8 @@ public class Banking
 
                     //add verification of data
                     accounts.add(new Account(name, adress, accountType));
-                    System.out.println("what follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\nPlease enter anything to move on\n" + accounts.get(accounts.size() - 1).getAccNumber());
+                    System.out.print('\u000C');
+                    System.out.println("WARNING READ THE FOLLOWING LINES\nwhat follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\nPlease enter anything to move on\n" + accounts.get(accounts.size() - 1).getAccNumber());
                     keyboard.nextLine();// change
                     memberTurn(name);
                     turn = false;
@@ -244,7 +248,7 @@ public class Banking
 
     public static boolean isNumeric(String str) { 
         try {  
-            Double.parseDouble(str);  
+            Integer.parseInt(str);  
             return true;
         }catch(NumberFormatException e){  
             return false;  
@@ -254,17 +258,21 @@ public class Banking
     public boolean legalAdressCheck(String adress){
         List<String> adressData = Arrays.asList(adress.split(" "));
         if(adressData.size() < 2){
+            System.out.println("1");
             return false;
         }
         if(isNumeric(adressData.get(0)) == false){
+            System.out.println(adressData.get(0) + "2");
             return false;
         }
         for (int i = 1; i < adressData.size(); i++){
             if (adressData.get(i) == null){
+                System.out.println("3");
                 return false;
             }
             for (int j = 1; j < adressData.get(i).length(); j++){
                 if((Character.isLetter(adressData.get(i).charAt(j))) == false){
+                    System.out.println("4");
                     return false;
                 }
             }
