@@ -144,9 +144,6 @@ public class Account
 
     public String generateAccountNumber(){
         Random random = new Random();
-        
-        
-        
         String accNumber = "08-" + this.branchNumber + "-" + random.nextInt(10000000) + "-00";
         return accNumber;
     }

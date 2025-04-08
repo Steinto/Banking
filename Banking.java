@@ -38,11 +38,9 @@ public class Banking
             System.out.print('\u000C');
             String name = "";
             // check if it is a legal name
-            boolean legalName = false;
-            while(legalName == false){
-
+            boolean containsComma = true;
+            while(containsComma){
                 System.out.println("Enter first and last legal name of customer below, including capitals.\nDo not enter commas\nEnter 'exit' to print the end of day report and stop program ");
-
                 name = keyboard.nextLine();
 
                 // > 2 words
@@ -51,9 +49,11 @@ public class Banking
                 // over 70 cahr
                 // contains numbers
                 // contains special characters
-                legalName = legalNameCheck(name);
 
-                System.out.println("not a legal full name please re-enter");
+                containsComma = name.contains(",");
+                if(containsComma){
+                    System.out.println("contains comma please re-enter");
+                }
             }
             if(name.equals("exit")){
                 double[] report = generateReport();
@@ -116,13 +116,11 @@ public class Banking
                             System.out.println(accounts.get(account).getBalance());
                             break;
                         case 2:
-                            System.out.println("please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places");
-                            double withdrawalAmmount = keyboard.nextDouble();
+                            double withdrawalAmmount = checkDouble("please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
                             accounts.get(account).withdraw(withdrawalAmmount);
                             break;
                         case 3:
-                            System.out.println("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places");
-                            double depositAmmount = keyboard.nextDouble();
+                            double depositAmmount = checkDouble("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
                             accounts.get(account).deposit(depositAmmount);
                             break;
                         case 4:
@@ -208,31 +206,6 @@ public class Banking
         }
     }
 
-    public boolean legalNameCheck(String name){
-
-        List<String> names = Arrays.asList(name.split(" "));
-        if(names.size() < 2){
-            return false;
-        }
-        for (int i = 0; i < names.size(); i++){
-            if(names.get(i).length() > 70 || names.get(i).length() < 3){
-                return false;
-            }
-        }
-
-        for (int i = 0; i < names.size(); i++){
-            if (names.get(i) == null){
-                return false;
-            }
-            for (int j = 0; j < names.get(i).length(); j++){
-                if((Character.isLetter(names.get(i).charAt(j))) == false){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public int findAccounts(String name, String accNum){
         for( int i = 0; i < accounts.size(); i++){
             if(name.equals(accounts.get(i).getName()) && accNum.equals(accounts.get(i).getAccNumber())){
@@ -305,12 +278,35 @@ public class Banking
         }
     }
 
-    public boolean checkComma(String msg){
-        boolean comma = false;
+    public double checkDouble(String msg){
+        boolean cont = true;
+        double input1 = 0;
+        while(cont){
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println(msg);
+            String input = keyboard.nextLine();
+            Scanner scanner = new Scanner(input);
 
-        return comma;
+            try {
+                // Attempt to parse the input string to an integer
+                input1 = Double.parseDouble(input);
+                System.out.println(input1 + " is a valid double");
+
+                
+                    cont = false;
+                
+            } catch (NumberFormatException e) {
+                // If parsing fails, the input is not a valid integer
+                System.out.println(input + " is not a valid Double, please re enter");
+            }
+        }
+        return input1;
+        
+        
+        
     }
-
+    
+    
     public int checkInt(String msg, int expectedInputRange){
         boolean cont = true;
         int input1 = 0;
