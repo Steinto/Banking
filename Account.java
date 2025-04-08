@@ -7,7 +7,7 @@
 import java.util.Random;
 public class Account
 {
-    // instance variables
+    // constant variables
     final String branchNumber = "0101";
     final double maxWithdrawSavings = 5000;
     final double maxWithdrawEveryday = 5000;
@@ -15,6 +15,7 @@ public class Account
     final double minBalanceCurrent = -1000;
     final double minBalanceEveryday = 0;
     final double minBalanceSavings = 0;
+    // instance variables
     private String name;
     private String adress;
     private String accNumber;
@@ -51,7 +52,6 @@ public class Account
                 this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
-
     }
 
     public Account(String name, String adress, String accType)
@@ -77,7 +77,6 @@ public class Account
                 this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
-
     }
 
     public Account(String accType)
@@ -99,7 +98,6 @@ public class Account
                 this.maxWithdraw = maxWithdrawEveryday;
                 break;
         }
-
     }
 
     public double getMaxWithdraw(){
@@ -152,7 +150,7 @@ public class Account
         depositAmmount = depositAmmount * 100;
         depositAmmount = Math.floor(depositAmmount);
         depositAmmount = depositAmmount / 100;
-        System.out.println(depositAmmount);
+        
         if(depositAmmount < this.maxWithdraw && depositAmmount > 0){
             this.totalTransactions = this.totalTransactions + depositAmmount;
             this.balance = this.balance + depositAmmount;
@@ -165,7 +163,7 @@ public class Account
         withdrawAmmount = withdrawAmmount * 100;
         withdrawAmmount = Math.floor(withdrawAmmount);
         withdrawAmmount = withdrawAmmount / 100;
-        System.out.println(withdrawAmmount);
+        
         if((this.balance - withdrawAmmount) > this.minBalance){
             this.totalTransactions = this.totalTransactions - withdrawAmmount;
             this.balance = this.balance - withdrawAmmount;

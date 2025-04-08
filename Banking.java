@@ -1,5 +1,5 @@
 /**
- * Main
+ * Banking class
  *
  * Toby S
  * 31/03/2025
@@ -38,34 +38,24 @@ public class Banking
             System.out.print('\u000C');
             String name = "";
             // check if it is a legal name
-            // check if it is a legal name
             boolean legalName = false;
             while(legalName == false){
-
-                System.out.println("Enter first and last legal name of customer below, including capitals.\nDo not enter commas\nEnter 'exit' to print the end of day report and stop program ");
-
+                System.out.println("Enter first and last legal name of customer below, including capitals\nEnter 'exit' to print the end of day report and stop programme ");
                 name = keyboard.nextLine();
                 if(name.equals("exit")){
                     legalName = true;
                 }else{
-                    // > 2 words
-                    // at least 2 letters
-
-                    // over 70 cahr
-                    // contains numbers
-                    // contains special characters
                     legalName = legalNameCheck(name);
-
-                    System.out.println("not a legal full name please re-enter");
+                    System.out.print('\u000C');
+                    System.out.println("'" + name + "' is not a legal full name, please re-enter\n");
                 }
             }
             if(name.equals("exit")){
                 double[] report = generateReport();
-                System.out.println(report[0]);
-                System.out.println(report[1]);
+                System.out.print('\u000C');
+                System.out.println("Total money in bank: $" + report[0] + "\nTotal transactions: $" + report[1] + "\n-programme terminated");
                 write();
                 cont = false;
-
             }else{
                 if(haveAccounts(name) == true){
                     memberTurn(name);
@@ -74,75 +64,70 @@ public class Banking
                 }
             }
         }
-
     }
 
     public double[] generateReport(){
         double[] report = new double[2];
         for(int i = 0;i < accounts.size();i++){
             report[0] = report[0] + accounts.get(i).getBalance();
-            // System.out.println(accounts.get(i).getBalance());
-            // System.out.println(report[0]);
             report[1] = report[1] + accounts.get(i).getTotalTransactions();
         }
-
         return report;
     }
 
     public void memberTurn(String name){
-        System.out.print('\u000C');
+        Scanner keyboard = new Scanner(System.in);
+        boolean accountTurn = true;
         boolean turn = true;
+        System.out.print('\u000C');
         while(turn){
-
-            Scanner keyboard = new Scanner(System.in);
             System.out.println("Customer: " + name);
-            boolean contTurn = true;
-
-            System.out.println("please enter account number of the account the customer wants to \ninquire about, including hyphens e.g. XX-XXXX-XXXXXXX-XX\nTo start with a new customer, input 'exit'");
+            System.out.println("\nplease enter account number of the account the customer wants to \ninquire about, including hyphens e.g. XX-XXXX-XXXXXXX-XX\nTo start with a new customer, input 'exit'");
             String accNumber = keyboard.nextLine();
-
             if(accNumber.equals("exit")){
-                contTurn = false;
+                accountTurn = false;
                 turn = false;
             }
-
             int account = findAccounts(name, accNumber);
-            while(contTurn) {
-
-                // System.out.println(acc);
+            System.out.print('\u000C');
+            while(accountTurn) {
                 if(account > -1){
                     int action = checkInt("please enter nunmber corrsponding to the action you want to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer", 5);
-                    // System.out.println("please enter nunmber corrsponding to the action you want to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer");
-                    // int action = keyboard.nextInt();
                     switch(action) {
                         case 1:
-                            // System.out.println(account);
-                            System.out.println(accounts.get(account).getBalance());
+                            System.out.print('\u000C');
+                            System.out.println("Balance: $" + accounts.get(account).getBalance() + "\n");
                             break;
                         case 2:
-                            double withdrawalAmmount = checkDouble("please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
+                            System.out.print('\u000C');
+                            double withdrawalAmmount = checkDouble("Please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal places it will be rounded down");
                             accounts.get(account).withdraw(withdrawalAmmount);
+                            System.out.print('\u000C');
+                            System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
                             break;
                         case 3:
+                            System.out.print('\u000C');
                             double depositAmmount = checkDouble("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
                             accounts.get(account).deposit(depositAmmount);
+                            System.out.print('\u000C');
+                            System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
                             break;
                         case 4:
                             accounts.get(account).setState(false);
                             accounts.remove(account);
-                            contTurn = false;
+                            accountTurn = false;
                             turn = false;
-
                             break;
                         case 5:
-                            contTurn = false;
+                            accountTurn = false;
                             turn = false;
                             break;
                         default:
                     }
                 }else{
-                    System.out.println("not a valid account number\nPlease re-enter");
-                    contTurn = false;
+                    accountTurn = false;
+                    System.out.print('\u000C');
+                    System.out.println("not a valid account number\nPlease re-enter\n");
                 }
             }
         }
@@ -150,44 +135,27 @@ public class Banking
 
     public void nonMemberTurn(String name){
         Scanner keyboard = new Scanner(System.in);
-        System.out.print('\u000C');
         boolean turn = true;
+        System.out.print('\u000C');
         while(turn){
-            System.out.println("Customer: " + name);
+            System.out.println("Customer: " + name + "\n");
             System.out.println("It seems you don't currently have an account with us.\nWould you like to open one?\nEnter 'yes' to make a new account\nor 'no' to start with a new customer");
             String action = keyboard.nextLine();
+            System.out.print('\u000C');
             switch(action) {
                 case "yes":
-
-                    // check for valid street name
                     String adress = "";
-                    // boolean containsComma = true;
-                    // while(containsComma){
-                    // System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
-                    // adress = keyboard.nextLine();
-                    // containsComma = adress.contains(",");
-                    // if(containsComma){
-                    // System.out.println("contains comma please re-enter");
-                    // }
-                    // }
-
                     boolean legalAdress = false;
                     while(legalAdress == false){
-
                         System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
                         adress = keyboard.nextLine();
                         legalAdress = legalAdressCheck(adress);
-
-                        System.out.println("not a legal adress please re-enter");
+                        System.out.print('\u000C');
+                        System.out.println("not a legal adress please re-enter\n");
                     }
-
-                    // System.out.println("please enter full adress e.g. x example street");
-                    // String adress = keyboard.nextLine();
-                    // System.out.println("please enter the number coresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw());
-                    // System.out.println("2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw());
-                    // System.out.println("3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw());
-                    // int accountTypeAction = keyboard.nextInt();
-                    int accountTypeAction = checkInt("please enter the number coresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw() + "\n2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw() + "\n3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw(), 3);
+                    System.out.print('\u000C');
+                    System.out.println("adress: " + adress + "\n");
+                    int accountTypeAction = checkInt("please enter the number corresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw() + "\n2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw() + "\n3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw(), 3);
                     String accountType = " ";
                     switch(accountTypeAction) {
                         case 1:
@@ -201,28 +169,26 @@ public class Banking
                             break;
 
                     }
-
                     //add verification of data
                     accounts.add(new Account(name, adress, accountType));
                     System.out.print('\u000C');
-                    System.out.println("WARNING READ THE FOLLOWING LINES\nwhat follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\nPlease enter anything to move on\n" + accounts.get(accounts.size() - 1).getAccNumber());
-                    keyboard.nextLine();// change
+                    System.out.println("===WARNING READ THE FOLLOWING LINES===\n\nwhat follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\nenter anything to move on\n\nAccount Number: " + accounts.get(accounts.size() - 1).getAccNumber());
+                    keyboard.nextLine();
                     memberTurn(name);
                     turn = false;
                     break;
                 case "no":
-                    System.out.println("if you dont want to open an account\nwe cant help you today");
                     turn = false;
                     break;
                 default:
-                    System.out.println("Error please re-enter");
+                    System.out.print('\u000C');
+                    System.out.println("Error please enter 'yes' or 'no'\n");
                     break;
             }
         }
     }
 
     public boolean legalNameCheck(String name){
-
         List<String> names = Arrays.asList(name.split(" "));
         if(names.size() < 2){
             return false;
@@ -277,7 +243,6 @@ public class Banking
                 }
             }
         }
-
         return true;
     }
 
@@ -292,10 +257,7 @@ public class Banking
 
     public boolean haveAccounts(String name){
         for( int i = 0; i < accounts.size(); i++){
-            // System.out.println(accounts.get(i).getName());
-            // System.out.println(name);
             if(name.equals(accounts.get(i).getName())){
-                // System.out.println("3");
                 return true;
             }
         }
@@ -323,27 +285,21 @@ public class Banking
         try{
             File myFile = new File("bankData - bankData.csv");
             Scanner myReader = new Scanner(myFile);
-
             while (myReader.hasNextLine()) {
                 List<List<String>> data = new ArrayList<>();
                 ArrayList<String> arrL = new ArrayList<String>();
                 List<String> lineData = Arrays.asList(myReader.nextLine().split(","));
                 data.add(lineData);
-
                 for (List<String> list : data) {
                     for (String str : list) {
                         arrL.add(str);
                     }
                 }
-
-                // Account account = new Account(arrL.get(0), arrL.get(1), arrL.get(2), arrL.get(3), Double.parseDouble(arrL.get(4)));
                 accounts.add(new Account(arrL.get(0), arrL.get(1), arrL.get(2), arrL.get(3), Double.parseDouble(arrL.get(4))));
             }
-
         }catch(Exception e){
             System.out.print(e);
         }
-        //return accounts;
     }
 
     public double checkDouble(String msg){
@@ -354,20 +310,15 @@ public class Banking
             System.out.println(msg);
             String input = keyboard.nextLine();
             Scanner scanner = new Scanner(input);
-
             try {
-                // Attempt to parse the input string to an integer
                 input1 = Double.parseDouble(input);
                 System.out.println(input1 + " is a valid double");
-
                 cont = false;
             } catch (NumberFormatException e) {
-                // If parsing fails, the input is not a valid integer
                 System.out.println(input + " is not a valid Double, please re enter");
             }
         }
         return input1;
-
     }
 
     public int checkInt(String msg, int expectedInputRange){
@@ -378,20 +329,17 @@ public class Banking
             System.out.println(msg);
             String input = keyboard.nextLine();
             Scanner scanner = new Scanner(input);
-
             try {
-                // Attempt to parse the input string to an integer
                 input1 = Integer.parseInt(input);
-                System.out.println(input1 + " is a valid integer");
-
                 if(input1 <= expectedInputRange && input1 > 0){
                     cont = false;
                 }else{
-                    System.out.println("this is not a valid answer");
+                    System.out.print('\u000C');
+                    System.out.println("'" + input1 + "' is not a valid answer\n");
                 }
             } catch (NumberFormatException e) {
-                // If parsing fails, the input is not a valid integer
-                System.out.println(input + " is not a valid integer, please re enter");
+                System.out.print('\u000C');
+                System.out.println("'" + input + "' is not a valid answer\n");
             }
         }
         return input1;
