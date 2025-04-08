@@ -1,5 +1,5 @@
 /**
- * Banking class
+ * Banking test class
  *
  * Toby S
  * 31/03/2025
@@ -37,7 +37,6 @@ public class Banking
         while(cont){
             System.out.print('\u000C');
             String name = "";
-            // check if it is a legal name
             boolean legalName = false;
             while(legalName == false){
                 System.out.println("Enter first and last legal name of customer below, including capitals\nEnter 'exit' to print the end of day report and stop programme ");
@@ -57,9 +56,9 @@ public class Banking
                 write();
                 cont = false;
             }else{
-                if(haveAccounts(name) == true){
+                if(findAccounts(name) > -1){
                     memberTurn(name);
-                }else if(haveAccounts(name) == false){//remove have accounts
+                }else if(findAccounts(name) == -1){
                     nonMemberTurn(name);
                 }
             }
@@ -80,57 +79,71 @@ public class Banking
         boolean accountTurn = true;
         boolean turn = true;
         System.out.print('\u000C');
-        while(turn){
+        int account = findAccounts(name);
+
+        System.out.println("Customer: " + name);
+        System.out.println("\n===WARMING READ THE FOLLOWING LINES===\n\nThe customer should have valid identification e.g.\n(drivers lisence, passport, birth certificate)\nif they don't have any identification don't let them access the account\n\nWhat follows is the customers account number, to access the account the customer MUST know this number\nask for this number and if they don't know it dont allow them to acces the account\nenter anything to move on\n\nAccount Number: " + accounts.get(account).getAccNumber());
+        keyboard.nextLine();
+        System.out.print('\u000C');
+        while(accountTurn) {
             System.out.println("Customer: " + name);
-            System.out.println("\nplease enter account number of the account the customer wants to \ninquire about, including hyphens e.g. XX-XXXX-XXXXXXX-XX\nTo start with a new customer, input 'exit'");
-            String accNumber = keyboard.nextLine();
-            if(accNumber.equals("exit")){
-                accountTurn = false;
-                turn = false;
-            }
-            int account = findAccounts(name, accNumber);
-            System.out.print('\u000C');
-            while(accountTurn) {
-                if(account > -1){
-                    int action = checkInt("please enter nunmber corrsponding to the action you want to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer", 5);
-                    switch(action) {
-                        case 1:
-                            System.out.print('\u000C');
-                            System.out.println("Balance: $" + accounts.get(account).getBalance() + "\n");
-                            break;
-                        case 2:
-                            System.out.print('\u000C');
-                            double withdrawalAmmount = checkDouble("Please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal places it will be rounded down");
-                            accounts.get(account).withdraw(withdrawalAmmount);
-                            System.out.print('\u000C');
-                            System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
-                            break;
-                        case 3:
-                            System.out.print('\u000C');
-                            double depositAmmount = checkDouble("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
-                            accounts.get(account).deposit(depositAmmount);
-                            System.out.print('\u000C');
-                            System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
-                            break;
-                        case 4:
-                            accounts.get(account).setState(false);
-                            accounts.remove(account);
-                            accountTurn = false;
-                            turn = false;
-                            break;
-                        case 5:
-                            accountTurn = false;
-                            turn = false;
-                            break;
-                        default:
-                    }
-                }else{
-                    accountTurn = false;
+            System.out.println("Adress: " + accounts.get(account).getAdress());
+            System.out.println("Account Number: " + accounts.get(account).getAccNumber());
+
+            int action = checkInt("\nplease enter number corrsponding to the action the customer/you wants to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer", 5);
+            switch(action) {
+                case 1:
                     System.out.print('\u000C');
-                    System.out.println("not a valid account number\nPlease re-enter\n");
-                }
+                    System.out.println("Balance: $" + accounts.get(account).getBalance() + "\n");
+                    break;
+                case 2:
+                    System.out.print('\u000C');
+                    double withdrawalAmmount = checkDouble("Please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal places it will be rounded down");
+                    accounts.get(account).withdraw(withdrawalAmmount);
+                    System.out.print('\u000C');
+                    System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
+                    break;
+                case 3:
+                    System.out.print('\u000C');
+                    double depositAmmount = checkDouble("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
+                    accounts.get(account).deposit(depositAmmount);
+                    System.out.print('\u000C');
+                    System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
+                    break;
+                case 4:
+                    System.out.print('\u000C');
+                    boolean verification = false;
+                    while(verification == false){
+                        System.out.println("===WARNING THIS WILL PERMINANTLY DELETE THE ACCOUNT===\n\nif the customer still wants to perminantly delete account enter 'yes'\nto go back enter 'no'");
+                        String input = keyboard.nextLine();
+                        switch(input){
+                            case "yes":
+                                accounts.get(account).setState(false);
+                                accounts.remove(account);
+                                verification = true;
+                                accountTurn = false;
+                                turn = false;
+                                break;
+                            case "no":
+                                System.out.print('\u000C');
+                                verification = true;
+                                break;
+                            default:
+                                System.out.print('\u000C');
+                                System.out.println("Error please enter 'yes' or 'no'\n");
+                                break;
+                        }
+                    }
+                    break;
+                case 5:
+                    accountTurn = false;
+                    turn = false;
+                    break;
+                default:
             }
+
         }
+
     }
 
     public void nonMemberTurn(String name){
@@ -139,7 +152,7 @@ public class Banking
         System.out.print('\u000C');
         while(turn){
             System.out.println("Customer: " + name + "\n");
-            System.out.println("It seems you don't currently have an account with us.\nWould you like to open one?\nEnter 'yes' to make a new account\nor 'no' to start with a new customer");
+            System.out.println("No accounts under that name\nWould the customer like to open one?\nEnter 'yes' to make a new account\nor 'no' to start with a new customer");
             String action = keyboard.nextLine();
             System.out.print('\u000C');
             switch(action) {
@@ -147,7 +160,7 @@ public class Banking
                     String adress = "";
                     boolean legalAdress = false;
                     while(legalAdress == false){
-                        System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
+                        System.out.println("please enter full adress of customer e.g. x example street\nDo not enter a comma");
                         adress = keyboard.nextLine();
                         legalAdress = legalAdressCheck(adress);
                         System.out.print('\u000C');
@@ -155,7 +168,7 @@ public class Banking
                     }
                     System.out.print('\u000C');
                     System.out.println("adress: " + adress + "\n");
-                    int accountTypeAction = checkInt("please enter the number corresponding to the type of account you want to open\n1. 'Savings' has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw() + "\n2. 'Current' has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw() + "\n3. 'Everyday' has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw(), 3);
+                    int accountTypeAction = checkInt("please enter the number corresponding to the type of account the customer wants to open\n'1' Savings has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw() + "\n'2' Current has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw() + "\n'3' Everyday has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw(), 3);
                     String accountType = " ";
                     switch(accountTypeAction) {
                         case 1:
@@ -172,7 +185,7 @@ public class Banking
                     //add verification of data
                     accounts.add(new Account(name, adress, accountType));
                     System.out.print('\u000C');
-                    System.out.println("===WARNING READ THE FOLLOWING LINES===\n\nwhat follows is the customers account number, \nplease make sure to ensure they write this down as they will need it to access their account\nenter anything to move on\n\nAccount Number: " + accounts.get(accounts.size() - 1).getAccNumber());
+                    System.out.println("===WARNING READ THE FOLLOWING LINES===\n\nwhat follows is the customers account number, \nplease ensure the customer writes this down as they will need it to access their account\nenter anything to move on\n\nAccount Number: " + accounts.get(accounts.size() - 1).getAccNumber());
                     keyboard.nextLine();
                     memberTurn(name);
                     turn = false;
@@ -246,24 +259,15 @@ public class Banking
         return true;
     }
 
-    public int findAccounts(String name, String accNum){
+    public int findAccounts(String name){
         for( int i = 0; i < accounts.size(); i++){
-            if(name.equals(accounts.get(i).getName()) && accNum.equals(accounts.get(i).getAccNumber())){
+            if(name.equals(accounts.get(i).getName())){
                 return i;
             }
         }
         return -1;
     }
-
-    public boolean haveAccounts(String name){
-        for( int i = 0; i < accounts.size(); i++){
-            if(name.equals(accounts.get(i).getName())){
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     public void write(){
         try{
             FileWriter myWriter = new FileWriter(bankData);

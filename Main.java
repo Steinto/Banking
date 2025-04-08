@@ -1,12 +1,14 @@
+
 /**
- * kicks off program
+ * Write a description of class Main here.
  *
- * Toby S
- * 02/04/2025
+ * @author (your name)
+ * @version (a version number or a date)
  */
 public class Main
 {
     public static void main(String[] args){
         Banking banking = new Banking();
+        
     }
 }
