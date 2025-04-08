@@ -38,9 +38,12 @@ public class Banking
             System.out.print('\u000C');
             String name = "";
             // check if it is a legal name
-            boolean containsComma = true;
-            while(containsComma){
+            // check if it is a legal name
+            boolean legalName = false;
+            while(legalName == false){
+
                 System.out.println("Enter first and last legal name of customer below, including capitals.\nDo not enter commas\nEnter 'exit' to print the end of day report and stop program ");
+
                 name = keyboard.nextLine();
 
                 // > 2 words
@@ -49,11 +52,9 @@ public class Banking
                 // over 70 cahr
                 // contains numbers
                 // contains special characters
+                legalName = legalNameCheck(name);
 
-                containsComma = name.contains(",");
-                if(containsComma){
-                    System.out.println("contains comma please re-enter");
-                }
+                System.out.println("not a legal full name please re-enter");
             }
             if(name.equals("exit")){
                 double[] report = generateReport();
@@ -157,14 +158,24 @@ public class Banking
 
                     // check for valid street name
                     String adress = "";
-                    boolean containsComma = true;
-                    while(containsComma){
+                    // boolean containsComma = true;
+                    // while(containsComma){
+                        // System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
+                        // adress = keyboard.nextLine();
+                        // containsComma = adress.contains(",");
+                        // if(containsComma){
+                            // System.out.println("contains comma please re-enter");
+                        // }
+                    // }
+
+                    boolean legalAdress = false;
+                    while(legalAdress == false){
+
                         System.out.println("please enter full adress e.g. x example street\nDo not enter a comma");
                         adress = keyboard.nextLine();
-                        containsComma = adress.contains(",");
-                        if(containsComma){
-                            System.out.println("contains comma please re-enter");
-                        }
+                        legalAdress = legalAdressCheck(name);
+
+                        System.out.println("not a legal adress please re-enter");
                     }
 
                     // System.out.println("please enter full adress e.g. x example street");
@@ -204,6 +215,62 @@ public class Banking
                     break;
             }
         }
+    }
+
+    public boolean legalNameCheck(String name){
+
+        List<String> names = Arrays.asList(name.split(" "));
+        if(names.size() < 2){
+            return false;
+        }
+        for (int i = 0; i < names.size(); i++){
+            if(names.get(i).length() > 70 || names.get(i).length() < 3){
+                return false;
+            }
+        }
+
+        for (int i = 0; i < names.size(); i++){
+            if (names.get(i) == null){
+                return false;
+            }
+            for (int j = 0; j < names.get(i).length(); j++){
+                if((Character.isLetter(names.get(i).charAt(j))) == false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNumeric(String str) { 
+        try {  
+            Double.parseDouble(str);  
+            return true;
+        }catch(NumberFormatException e){  
+            return false;  
+        }  
+    }
+
+    public boolean legalAdressCheck(String adress){
+        List<String> adressData = Arrays.asList(adress.split(" "));
+        if(adressData.size() < 2){
+            return false;
+        }
+        if(isNumeric(adressData.get(0)) == false){
+            return false;
+        }
+        for (int i = 1; i < adressData.size(); i++){
+            if (adressData.get(i) == null){
+                return false;
+            }
+            for (int j = 1; j < adressData.get(i).length(); j++){
+                if((Character.isLetter(adressData.get(i).charAt(j))) == false){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public int findAccounts(String name, String accNum){
@@ -264,18 +331,11 @@ public class Banking
                 // Account account = new Account(arrL.get(0), arrL.get(1), arrL.get(2), arrL.get(3), Double.parseDouble(arrL.get(4)));
                 accounts.add(new Account(arrL.get(0), arrL.get(1), arrL.get(2), arrL.get(3), Double.parseDouble(arrL.get(4))));
             }
-            printAll(accounts);
 
         }catch(Exception e){
             System.out.print(e);
         }
         //return accounts;
-    }
-
-    public void printAll(ArrayList<Account> arrL){
-        for(int i = 0 ; i < arrL.size();  i++){
-            System.out.println(arrL.get(i).getBalance());
-        }
     }
 
     public double checkDouble(String msg){
@@ -292,21 +352,16 @@ public class Banking
                 input1 = Double.parseDouble(input);
                 System.out.println(input1 + " is a valid double");
 
-                
-                    cont = false;
-                
+                cont = false;
             } catch (NumberFormatException e) {
                 // If parsing fails, the input is not a valid integer
                 System.out.println(input + " is not a valid Double, please re enter");
             }
         }
         return input1;
-        
-        
-        
+
     }
-    
-    
+
     public int checkInt(String msg, int expectedInputRange){
         boolean cont = true;
         int input1 = 0;
