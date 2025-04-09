@@ -16,11 +16,10 @@ public class Account
     final double minBalanceSavings = 0;
     // instance variables
     private String name;
-    private String adress;
+    private String Address;
     private String accNumber;
     private String accType;
     private double balance;
-    private boolean active;
     private double minBalance;
     private double maxWithdraw;
     private double totalTransactions = 0.0;
@@ -28,14 +27,13 @@ public class Account
     /**
      * Constructor for objects of class Account
      */
-    public Account(String name, String adress, String accNumber, String accType, double balance)
+    public Account(String name, String Address, String accNumber, String accType, double balance)
     {
         this.name = name;
-        this.adress = adress;
+        this.Address = Address;
         this.accNumber = accNumber;
         this.accType = accType;
         this.balance = balance;
-        this.active = true;
 
         switch(this.accType){
             case "Current":
@@ -53,14 +51,13 @@ public class Account
         }
     }
 
-    public Account(String name, String adress, String accType)
+    public Account(String name, String Address, String accType)
     {
         this.name = name;
-        this.adress = adress;
+        this.Address = Address;
         this.accNumber = generateAccountNumber();
         this.accType = accType;
         this.balance = 0;
-        this.active = true;
 
         switch(this.accType){
             case "Current":
@@ -81,7 +78,6 @@ public class Account
     public Account(String accType)
     {
         this.accType = accType;
-        this.active = false;
 
         switch(this.accType){
             case "Current":
@@ -107,16 +103,12 @@ public class Account
         return(this.minBalance);
     }
 
-    public boolean getState(){
-        return(this.active);
-    }
-
     public String getName(){
         return(this.name);
     }
 
-    public String getAdress(){
-        return(this.adress);
+    public String getAddress(){
+        return(this.Address);
     }
 
     public String getAccNumber(){
@@ -135,10 +127,6 @@ public class Account
         return(this.totalTransactions);
     }
 
-    public void setState(boolean State){
-        this.active = State;
-    }
-
     public String generateAccountNumber(){
         double num = Math.floor(Math.random() * (10000000 - 1000000 + 1) + 1000000);
         int random7Digit = (int) Math.round(num);
@@ -147,28 +135,30 @@ public class Account
     }
 
     public void deposit(double depositAmmount){
-        depositAmmount = depositAmmount * 100;
-        depositAmmount = Math.floor(depositAmmount);
-        depositAmmount = depositAmmount / 100;
-        
+        depositAmmount = round2dp(depositAmmount);
         if(depositAmmount >= 0){
-            this.totalTransactions = this.totalTransactions + depositAmmount;
-            this.balance = this.balance + depositAmmount;
+            this.totalTransactions = round2dp(this.totalTransactions + depositAmmount);
+            this.balance = round2dp(this.balance + depositAmmount);
         }else{
             System.out.println("your deposit is invalid");
         }
     }
 
     public void withdraw(double withdrawAmmount){
-        withdrawAmmount = withdrawAmmount * 100;
-        withdrawAmmount = Math.floor(withdrawAmmount);
-        withdrawAmmount = withdrawAmmount / 100;
+        withdrawAmmount = round2dp(withdrawAmmount);
         double i = this.balance - withdrawAmmount;
         if(i > this.minBalance){
-            this.totalTransactions = this.totalTransactions - withdrawAmmount;
-            this.balance = this.balance - withdrawAmmount;
+            this.totalTransactions = round2dp(this.totalTransactions - withdrawAmmount);
+            this.balance = round2dp(this.balance - withdrawAmmount);
         }else{
             System.out.println("your withdrawal is invalid");
         }
+    }
+    
+    public double round2dp(double num){
+        num = num * 100;
+        num = Math.floor(num);
+        num = num / 100;
+        return num;
     }
 }

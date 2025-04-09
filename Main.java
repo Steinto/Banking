@@ -1,5 +1,6 @@
 /**
- * kicks off program
+ * Creates a Banking object,
+ * this starts main programme.
  *
  * Toby S
  * 02/04/2025

@@ -18,10 +18,17 @@ public class Banking
     public Account egCurrent = new Account("Current");
     public Account egEveryday = new Account("Everyday");
     public boolean cont = true;
-    public File bankData = new File("bankData - bankData.csv");
 
+    /**
+
+     * Constructor for Banking object, takes no input.
+     * 
+     * Attempts to create file, wont work with file already there.
+     * Starts main loop.
+     */
     public Banking() {
         Scanner keyboard = new Scanner(System.in);
+        File bankData = new File("bankData - bankData.csv");
         try{
             if(bankData.createNewFile()){
                 System.out.println("File created: " + bankData.getName());
@@ -36,9 +43,10 @@ public class Banking
 
         while(cont){
             System.out.print('\u000C');
+
             String name = "";
             boolean legalName = false;
-            while(legalName == false){
+            while(legalName == false){ //Keep asking untill 'name' is a legal name
                 System.out.println("Enter first and last legal name of customer below, including capitals\nEnter 'exit' to print the end of day report and stop programme ");
                 name = keyboard.nextLine();
                 if(name.equals("exit")){
@@ -49,6 +57,7 @@ public class Banking
                     System.out.println("'" + name + "' is not a legal full name, please re-enter\n");
                 }
             }
+
             if(name.equals("exit")){
                 double[] report = generateReport();
                 System.out.print('\u000C');
@@ -62,9 +71,19 @@ public class Banking
                     nonMemberTurn(name);
                 }
             }
+
         }
     }
 
+    /**
+
+     * takes no input.
+     * 
+     * Adds balances af all accounts,
+     * sums total transactions of all open accounts.
+     * 
+     * Returns double array with 2 values, total balance and total transactions.
+     */
     public double[] generateReport(){
         double[] report = new double[2];
         for(int i = 0;i < accounts.size();i++){
@@ -74,10 +93,13 @@ public class Banking
         return report;
     }
 
+    /**
+     * 
+     * 
+     */
     public void memberTurn(String name){
         Scanner keyboard = new Scanner(System.in);
         boolean accountTurn = true;
-        boolean turn = true;
         System.out.print('\u000C');
         int account = findAccounts(name);
 
@@ -86,7 +108,7 @@ public class Banking
         keyboard.nextLine();
         System.out.print('\u000C');
         while(accountTurn) {
-            int action = checkInt("Customer: " + name + "\nAdress: " + accounts.get(account).getAdress() + "\nAccount Number: " + accounts.get(account).getAccNumber() + "\nAccount Type: " + accounts.get(account).getAccNumber() + "\nBalance: $" + accounts.get(account).getBalance() + "\n\nplease enter number corrsponding to the action the customer/you wants to do \n'1' make a withdrawal\n'2' make a deposit\n'3' close account\n'4' (Teller) start with new customer", 4);
+            int action = checkInt("Customer: " + name + "\nAddress: " + accounts.get(account).getAddress() + "\nAccount Number: " + accounts.get(account).getAccNumber() + "\nAccount Type: " + accounts.get(account).getAccType() + "\nBalance: $" + accounts.get(account).getBalance() + "\n\nplease enter number corrsponding to the action the customer/you wants to do \n'1' make a withdrawal\n'2' make a deposit\n'3' close account\n'4' (Teller) start with new customer", 4);
             switch(action) {
                 case 1:
                     System.out.print('\u000C');
@@ -108,11 +130,9 @@ public class Banking
                         String input = keyboard.nextLine();
                         switch(input){
                             case "yes":
-                                accounts.get(account).setState(false);
                                 accounts.remove(account);
                                 verification = true;
                                 accountTurn = false;
-                                turn = false;
                                 break;
                             case "no":
                                 System.out.print('\u000C');
@@ -127,7 +147,6 @@ public class Banking
                     break;
                 case 4:
                     accountTurn = false;
-                    turn = false;
                     break;
                 default:
             }
@@ -136,6 +155,10 @@ public class Banking
 
     }
 
+    /**
+
+     * 
+     */
     public void nonMemberTurn(String name){
         Scanner keyboard = new Scanner(System.in);
         boolean turn = true;
@@ -147,17 +170,17 @@ public class Banking
             System.out.print('\u000C');
             switch(action) {
                 case "yes":
-                    String adress = "";
-                    boolean legalAdress = false;
-                    while(legalAdress == false){
-                        System.out.println("please enter full adress of customer e.g. x example street\nDo not enter a comma");
-                        adress = keyboard.nextLine();
-                        legalAdress = legalAdressCheck(adress);
+                    String address = "";
+                    boolean legalAddress = false;
+                    while(legalAddress == false){
+                        System.out.println("please enter full address of customer e.g. x example street\nDo not enter a comma");
+                        address = keyboard.nextLine();
+                        legalAddress = legalAddressCheck(address);
                         System.out.print('\u000C');
-                        System.out.println("'" + adress + "' is not a legal adress please re-enter\n");
+                        System.out.println("'" + address + "' is not a legal address please re-enter\n");
                     }
                     System.out.print('\u000C');
-                    System.out.println("adress: " + adress + "\n");
+                    System.out.println("address: " + address + "\n");
                     int accountTypeAction = checkInt("please enter the number corresponding to the type of account the customer wants to open\n'1' Savings has a minimum balance of $" + egSavings.getMinBalance() + " and a maximum withdraw of $" + egSavings.getMaxWithdraw() + "\n'2' Current has a minimum balance of $" + egCurrent.getMinBalance() + " and a maximum withdraw of $" + egCurrent.getMaxWithdraw() + "\n'3' Everyday has a minimum balance of $" + egEveryday.getMinBalance() + " and a maximum withdraw of $" + egEveryday.getMaxWithdraw(), 3);
                     String accountType = " ";
                     switch(accountTypeAction) {
@@ -173,7 +196,7 @@ public class Banking
 
                     }
                     //add verification of data
-                    accounts.add(new Account(name, adress, accountType));
+                    accounts.add(new Account(name, address, accountType));
                     System.out.print('\u000C');
                     System.out.println("===WARNING READ THE FOLLOWING LINES===\n\nwhat follows is the customers account number, \nplease ensure the customer writes this down as they will need it to access their account\nenter anything to move on\n\nAccount Number: " + accounts.get(accounts.size() - 1).getAccNumber());
                     keyboard.nextLine();
@@ -191,6 +214,18 @@ public class Banking
         }
     }
 
+    /**
+
+     * Takes in String input (name).
+     * Checks for
+     * more then 1 word,
+     * each word less then 70 characters,
+     * checks if each word isn't NULL,
+     * checks if each word is only letters.
+     * 
+     * If all of these conditions are met for the enterd string, returns boolean true.
+     * If the string fails one of these checks returs boolean false.
+     */
     public boolean legalNameCheck(String name){
         List<String> names = Arrays.asList(name.split(" "));
         if(names.size() < 2){
@@ -215,6 +250,13 @@ public class Banking
         return true;
     }
 
+    /**
+
+     * Takes in String input (str).
+     * Attempts to parse str to int,
+     * if successful returns boolean true,
+     * if unsuccessful returns boolean false.
+     */
     public static boolean isNumeric(String str) { 
         try {  
             Integer.parseInt(str);  
@@ -224,24 +266,32 @@ public class Banking
         }  
     }
 
-    public boolean legalAdressCheck(String adress){
-        List<String> adressData = Arrays.asList(adress.split(" "));
-        if(adressData.size() < 2){
-            System.out.println("1");
+    /**
+
+     * Takes in a string input (address).
+     * Checks for
+     * more then 1 word,
+     * first word is numeric,
+     * remaining words are NULL,
+     * remaining words are letters.
+     * 
+     * If all of these conditions are met for the enterd string, returns boolean true.
+     * If the string fails one of these checks returs boolean false.
+     */
+    public boolean legalAddressCheck(String address){
+        List<String> addressData = Arrays.asList(address.split(" "));
+        if(addressData.size() < 2){
             return false;
         }
-        if(isNumeric(adressData.get(0)) == false){
-            System.out.println(adressData.get(0) + "2");
+        if(isNumeric(addressData.get(0)) == false){
             return false;
         }
-        for (int i = 1; i < adressData.size(); i++){
-            if (adressData.get(i) == null){
-                System.out.println("3");
+        for (int i = 1; i < addressData.size(); i++){
+            if (addressData.get(i) == null){
                 return false;
             }
-            for (int j = 1; j < adressData.get(i).length(); j++){
-                if((Character.isLetter(adressData.get(i).charAt(j))) == false){
-                    System.out.println("4");
+            for (int j = 1; j < addressData.get(i).length(); j++){
+                if((Character.isLetter(addressData.get(i).charAt(j))) == false){
                     return false;
                 }
             }
@@ -249,6 +299,12 @@ public class Banking
         return true;
     }
 
+    /**
+
+     * Takes in a string input (name).
+     * Serches account arraylist for an Account with the same name,
+     * returns the index of that account in the arraylist as an integer.
+     */
     public int findAccounts(String name){
         for( int i = 0; i < accounts.size(); i++){
             if(name.equals(accounts.get(i).getName())){
@@ -258,12 +314,20 @@ public class Banking
         return -1;
     }
 
+    /**
+    
+     * Takes no input.
+     * 
+     * Tries to write all data to bankData - bankData.csv.
+     * Returns nothing.
+     */
     public void write(){
+        File bankData = new File("bankData - bankData.csv");
         try{
             FileWriter myWriter = new FileWriter(bankData);
             for(int i = 0; i < accounts.size(); i++){
                 myWriter.write(accounts.get(i).getName() + ",");
-                myWriter.write(accounts.get(i).getAdress() + ",");
+                myWriter.write(accounts.get(i).getAddress() + ",");
                 myWriter.write(accounts.get(i).getAccNumber() + ",");
                 myWriter.write(accounts.get(i).getAccType() + ",");
                 myWriter.write(accounts.get(i).getBalance() + "\n");
@@ -275,6 +339,14 @@ public class Banking
         }
     }
 
+    /**
+    
+     * Rakes no input.
+     * 
+     * Tries to read data from bankData - bankData.csv and create Account objects depending on data in an arraylist.
+     * 
+     * Return nothing.
+     */
     public void read(){
         try{
             File myFile = new File("bankData - bankData.csv");
@@ -296,11 +368,19 @@ public class Banking
         }
     }
 
+    /**
+    
+     * Takes String as input (msg).
+     * 
+     * Attempts to parse uset input as double,
+     * if successful returns the parsed double.
+     * If unseccessful askes again.
+     */
     public double checkDouble(String msg){
+        Scanner keyboard = new Scanner(System.in);
         boolean cont = true;
         double input1 = 0;
         while(cont){
-            Scanner keyboard = new Scanner(System.in);
             System.out.println(msg);
             String input = keyboard.nextLine();
             Scanner scanner = new Scanner(input);
@@ -319,11 +399,20 @@ public class Banking
         return input1;
     }
 
+    /**
+    
+     * Takes String as input for mesgae to ask user (msg).
+     * Takes int as input for range of taken input (expectedInputRange);
+     * 
+     * Attempts to parse uset input as double,
+     * if successful returns the parsed double.
+     * If unseccessful askes again.
+     */
     public int checkInt(String msg, int expectedInputRange){
+        Scanner keyboard = new Scanner(System.in);
         boolean cont = true;
         int input1 = 0;
         while(cont){
-            Scanner keyboard = new Scanner(System.in);
             System.out.println(msg);
             String input = keyboard.nextLine();
             Scanner scanner = new Scanner(input);
