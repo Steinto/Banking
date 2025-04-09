@@ -99,15 +99,15 @@ public class Banking
                 case 2:
                     System.out.print('\u000C');
                     double withdrawalAmmount = checkDouble("Please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal places it will be rounded down");
-                    accounts.get(account).withdraw(withdrawalAmmount);
                     System.out.print('\u000C');
+                    accounts.get(account).withdraw(withdrawalAmmount);
                     System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
                     break;
                 case 3:
                     System.out.print('\u000C');
                     double depositAmmount = checkDouble("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
-                    accounts.get(account).deposit(depositAmmount);
                     System.out.print('\u000C');
+                    accounts.get(account).deposit(depositAmmount);
                     System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
                     break;
                 case 4:
@@ -164,7 +164,7 @@ public class Banking
                         adress = keyboard.nextLine();
                         legalAdress = legalAdressCheck(adress);
                         System.out.print('\u000C');
-                        System.out.println("not a legal adress please re-enter\n");
+                        System.out.println("'" + adress + "' is not a legal adress please re-enter\n");
                     }
                     System.out.print('\u000C');
                     System.out.println("adress: " + adress + "\n");
@@ -316,10 +316,12 @@ public class Banking
             Scanner scanner = new Scanner(input);
             try {
                 input1 = Double.parseDouble(input);
-                System.out.println(input1 + " is a valid double");
+                System.out.print('\u000C');
+                System.out.println("Error please re-enter\n");
                 cont = false;
             } catch (NumberFormatException e) {
-                System.out.println(input + " is not a valid Double, please re enter");
+                System.out.print('\u000C');
+                System.out.println("error please re-enter\n");
             }
         }
         return input1;

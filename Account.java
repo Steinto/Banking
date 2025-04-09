@@ -4,7 +4,6 @@
  * Toby S
  * 31/03/2025
  */
-import java.util.Random;
 public class Account
 {
     // constant variables
@@ -141,8 +140,9 @@ public class Account
     }
 
     public String generateAccountNumber(){
-        Random random = new Random();
-        String accNumber = "08-" + this.branchNumber + "-" + random.nextInt(10000000) + "-00";
+        double num = Math.floor(Math.random() * (10000000 - 1000000 + 1) + 1000000);
+        int random7Digit = (int) Math.round(num);
+        String accNumber = "08-" + this.branchNumber + "-" + random7Digit + "-00";
         return accNumber;
     }
 
