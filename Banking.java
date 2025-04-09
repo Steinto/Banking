@@ -86,31 +86,21 @@ public class Banking
         keyboard.nextLine();
         System.out.print('\u000C');
         while(accountTurn) {
-            System.out.println("Customer: " + name);
-            System.out.println("Adress: " + accounts.get(account).getAdress());
-            System.out.println("Account Number: " + accounts.get(account).getAccNumber());
-
-            int action = checkInt("\nplease enter number corrsponding to the action the customer/you wants to do \n1. show balance\n2. make a withdrawal\n3. make a deposit\n4. close account\n5. (accountant)start with new customer", 5);
+            int action = checkInt("Customer: " + name + "\nAdress: " + accounts.get(account).getAdress() + "\nAccount Number: " + accounts.get(account).getAccNumber() + "\nAccount Type: " + accounts.get(account).getAccNumber() + "\nBalance: $" + accounts.get(account).getBalance() + "\n\nplease enter number corrsponding to the action the customer/you wants to do \n'1' make a withdrawal\n'2' make a deposit\n'3' close account\n'4' (Teller) start with new customer", 4);
             switch(action) {
                 case 1:
-                    System.out.print('\u000C');
-                    System.out.println("Balance: $" + accounts.get(account).getBalance() + "\n");
-                    break;
-                case 2:
                     System.out.print('\u000C');
                     double withdrawalAmmount = checkDouble("Please enter the ammount the customer wants to withdraw \nas a positive number to 2 decemal places\nif the number has more than 2 decimal places it will be rounded down");
                     System.out.print('\u000C');
                     accounts.get(account).withdraw(withdrawalAmmount);
-                    System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
                     break;
-                case 3:
+                case 2:
                     System.out.print('\u000C');
                     double depositAmmount = checkDouble("please enter the ammount the customer wants to deposit \nas a positive number to 2 decemal places\nif the number has more than 2 decimal plaves it will be rounded down");
                     System.out.print('\u000C');
                     accounts.get(account).deposit(depositAmmount);
-                    System.out.println("New balance: $" + accounts.get(account).getBalance() + "\n");
                     break;
-                case 4:
+                case 3:
                     System.out.print('\u000C');
                     boolean verification = false;
                     while(verification == false){
@@ -135,7 +125,7 @@ public class Banking
                         }
                     }
                     break;
-                case 5:
+                case 4:
                     accountTurn = false;
                     turn = false;
                     break;
@@ -339,7 +329,7 @@ public class Banking
             Scanner scanner = new Scanner(input);
             try {
                 input1 = Integer.parseInt(input);
-                if(input1 <= expectedInputRange && input1 >= 0){
+                if(input1 <= expectedInputRange && input1 > 0){
                     cont = false;
                 }else{
                     System.out.print('\u000C');
