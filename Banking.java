@@ -90,7 +90,7 @@ public class Banking
             System.out.println("Adress: " + accounts.get(account).getAdress());
             System.out.println("Account Number: " + accounts.get(account).getAccNumber());
 
-            int action = checkInt("\nplease enter number corrsponding to the action the customer/you wants to do \n1. show balance\n2. make a withdrawl\n3. make a deposite\n4. close account\n5. (accountant)start with new customer", 5);
+            int action = checkInt("\nplease enter number corrsponding to the action the customer/you wants to do \n1. show balance\n2. make a withdrawal\n3. make a deposit\n4. close account\n5. (accountant)start with new customer", 5);
             switch(action) {
                 case 1:
                     System.out.print('\u000C');
@@ -267,7 +267,7 @@ public class Banking
         }
         return -1;
     }
-    
+
     public void write(){
         try{
             FileWriter myWriter = new FileWriter(bankData);
@@ -318,10 +318,12 @@ public class Banking
                 input1 = Double.parseDouble(input);
                 System.out.print('\u000C');
                 System.out.println("Error please re-enter\n");
-                cont = false;
+                if(input1 >= 0){
+                    cont = false;
+                }
             } catch (NumberFormatException e) {
                 System.out.print('\u000C');
-                System.out.println("error please re-enter\n");
+                System.out.println("Error please re-enter\n");
             }
         }
         return input1;
@@ -337,7 +339,7 @@ public class Banking
             Scanner scanner = new Scanner(input);
             try {
                 input1 = Integer.parseInt(input);
-                if(input1 <= expectedInputRange && input1 > 0){
+                if(input1 <= expectedInputRange && input1 >= 0){
                     cont = false;
                 }else{
                     System.out.print('\u000C');

@@ -151,7 +151,7 @@ public class Account
         depositAmmount = Math.floor(depositAmmount);
         depositAmmount = depositAmmount / 100;
         
-        if(depositAmmount < this.maxWithdraw && depositAmmount > 0){
+        if(depositAmmount >= 0){
             this.totalTransactions = this.totalTransactions + depositAmmount;
             this.balance = this.balance + depositAmmount;
         }else{
@@ -163,12 +163,12 @@ public class Account
         withdrawAmmount = withdrawAmmount * 100;
         withdrawAmmount = Math.floor(withdrawAmmount);
         withdrawAmmount = withdrawAmmount / 100;
-        
-        if((this.balance - withdrawAmmount) > this.minBalance){
+        double i = this.balance - withdrawAmmount;
+        if(i > this.minBalance){
             this.totalTransactions = this.totalTransactions - withdrawAmmount;
             this.balance = this.balance - withdrawAmmount;
         }else{
-            System.out.println("your withdrawl is invalid");
+            System.out.println("your withdrawal is invalid");
         }
     }
 }
