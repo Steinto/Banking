@@ -1,5 +1,5 @@
 /**
- * Banking test class
+ * Banking class
  *
  * Toby S
  * 31/03/2025

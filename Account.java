@@ -1,5 +1,5 @@
 /**
- * Class for accounts
+ * Accounts class
  *
  * Toby S
  * 31/03/2025
