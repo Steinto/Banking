@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Arrays;
 public class Banking
 {
+    // Objects used throughout this class
     public ArrayList<Account> accounts = new ArrayList<Account>();
     public Account egSavings = new Account("Savings");
     public Account egCurrent = new Account("Current");
     public Account egEveryday = new Account("Everyday");
-    public boolean cont = true;
 
     /**
 
@@ -41,6 +41,7 @@ public class Banking
         }
         read();
 
+        boolean cont = true;
         while(cont){
             System.out.print('\u000C');
 
@@ -57,7 +58,7 @@ public class Banking
                     System.out.println("'" + name + "' is not a legal full name, please re-enter\n");
                 }
             }
-
+            
             if(name.equals("exit")){
                 double[] report = generateReport();
                 System.out.print('\u000C');
@@ -71,7 +72,6 @@ public class Banking
                     nonMemberTurn(name);
                 }
             }
-
         }
     }
 
@@ -94,6 +94,10 @@ public class Banking
     }
 
     /**
+    
+     * Takes String input (name).
+     * 
+     * 
      * 
      * 
      */
@@ -157,6 +161,10 @@ public class Banking
 
     /**
 
+     * Takes String input (name).
+     * 
+     * 
+     * 
      * 
      */
     public void nonMemberTurn(String name){
@@ -404,31 +412,32 @@ public class Banking
      * Takes String as input for mesgae to ask user (msg).
      * Takes int as input for range of taken input (expectedInputRange);
      * 
-     * Attempts to parse uset input as double,
-     * if successful returns the parsed double.
+     * Attempts to parse uset input as int,
+     * if successful returns checks it is within range,
+     * if successful return input as int.
      * If unseccessful askes again.
      */
     public int checkInt(String msg, int expectedInputRange){
         Scanner keyboard = new Scanner(System.in);
         boolean cont = true;
-        int input1 = 0;
+        int inputNum = 0;
         while(cont){
             System.out.println(msg);
             String input = keyboard.nextLine();
             Scanner scanner = new Scanner(input);
             try {
-                input1 = Integer.parseInt(input);
-                if(input1 <= expectedInputRange && input1 > 0){
+                inputNum = Integer.parseInt(input);
+                if(inputNum <= expectedInputRange && inputNum > 0){
                     cont = false;
                 }else{
                     System.out.print('\u000C');
-                    System.out.println("'" + input1 + "' is not a valid answer\n");
+                    System.out.println("'" + inputNum + "' is not a valid answer\n");
                 }
             } catch (NumberFormatException e) {
                 System.out.print('\u000C');
                 System.out.println("'" + input + "' is not a valid answer\n");
             }
         }
-        return input1;
+        return inputNum;
     }
 }

@@ -25,7 +25,9 @@ public class Account
     private double totalTransactions = 0.0;
 
     /**
-     * Constructor for objects of class Account
+
+     * Takes inputs 4 * String, double.
+     * Constructor for objects of class Account when reading from bankData - bankData.csv.
      */
     public Account(String name, String Address, String accNumber, String accType, double balance)
     {
@@ -51,6 +53,11 @@ public class Account
         }
     }
 
+    /**
+
+     * Takes inputs 3 * String.
+     * Constructor for objects of class Account when creating new.
+     */
     public Account(String name, String Address, String accType)
     {
         this.name = name;
@@ -75,6 +82,11 @@ public class Account
         }
     }
 
+    /**
+
+     * Takes input String.
+     * Constructor for objects of class Account when creating example Account.
+     */
     public Account(String accType)
     {
         this.accType = accType;
@@ -95,6 +107,76 @@ public class Account
         }
     }
 
+    /**
+
+     * Takes no input.
+     * 
+     * Generates new account number according to NZ account number conventions.
+     * Returns account number.
+     */
+    public String generateAccountNumber(){
+        double num = Math.floor(Math.random() * (10000000 - 1000000 + 1) + 1000000);
+        int random7Digit = (int) Math.round(num);
+        String accNumber = "08-" + this.branchNumber + "-" + random7Digit + "-00";
+        return accNumber;
+    }
+    
+    /**
+
+     * Takes a double as input (depositAmmount)
+     * 
+     * Checkes the deposit ammount is valid,
+     * if deposit ammount is valid changes balance with regard to deposit ammount.
+     * 
+     * This function doesnt return anything.
+     */
+    public void deposit(double depositAmmount){
+        depositAmmount = round2dp(depositAmmount);
+        if(depositAmmount >= 0){
+            this.totalTransactions = round2dp(this.totalTransactions + depositAmmount);
+            this.balance = round2dp(this.balance + depositAmmount);
+        }else{
+            System.out.println("your deposit is invalid");
+        }
+    }
+
+    /**
+
+     * Takes a double as input (withdrawAmmount)
+     * 
+     * Checkes the withdraw ammount is valid,
+     * if deposit ammount is valid changes balance with regard to withdraw ammount.
+     * 
+     * This function doesnt return anything.
+     */
+    public void withdraw(double withdrawAmmount){
+        withdrawAmmount = round2dp(withdrawAmmount);
+        double i = this.balance - withdrawAmmount;
+        if(i > this.minBalance){
+            this.totalTransactions = round2dp(this.totalTransactions - withdrawAmmount);
+            this.balance = round2dp(this.balance - withdrawAmmount);
+        }else{
+            System.out.println("your withdrawal is invalid");
+        }
+    }
+
+    /**
+
+     * Takes an input as double (num).
+     * 
+     * Returns double (num) rounded to 2 decimal places.
+     */
+    public double round2dp(double num){
+        num = num * 100;
+        num = Math.floor(num);
+        num = num / 100;
+        return num;
+    }
+
+    /**
+
+     * Each of the following functions take no input and return a specified variable.
+     */
     public double getMaxWithdraw(){
         return(this.maxWithdraw);
     }
@@ -127,38 +209,4 @@ public class Account
         return(this.totalTransactions);
     }
 
-    public String generateAccountNumber(){
-        double num = Math.floor(Math.random() * (10000000 - 1000000 + 1) + 1000000);
-        int random7Digit = (int) Math.round(num);
-        String accNumber = "08-" + this.branchNumber + "-" + random7Digit + "-00";
-        return accNumber;
-    }
-
-    public void deposit(double depositAmmount){
-        depositAmmount = round2dp(depositAmmount);
-        if(depositAmmount >= 0){
-            this.totalTransactions = round2dp(this.totalTransactions + depositAmmount);
-            this.balance = round2dp(this.balance + depositAmmount);
-        }else{
-            System.out.println("your deposit is invalid");
-        }
-    }
-
-    public void withdraw(double withdrawAmmount){
-        withdrawAmmount = round2dp(withdrawAmmount);
-        double i = this.balance - withdrawAmmount;
-        if(i > this.minBalance){
-            this.totalTransactions = round2dp(this.totalTransactions - withdrawAmmount);
-            this.balance = round2dp(this.balance - withdrawAmmount);
-        }else{
-            System.out.println("your withdrawal is invalid");
-        }
-    }
-    
-    public double round2dp(double num){
-        num = num * 100;
-        num = Math.floor(num);
-        num = num / 100;
-        return num;
-    }
 }
