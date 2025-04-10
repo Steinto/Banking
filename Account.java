@@ -123,18 +123,18 @@ public class Account
     
     /**
 
-     * Takes a double as input (depositAmmount)
+     * Takes a double as input (depositAmount)
      * 
-     * Checkes the deposit ammount is valid,
-     * if deposit ammount is valid changes balance with regard to deposit ammount.
+     * Checks the deposit amount is valid,
+     * if deposit amount is valid changes balance with regard to deposit amount.
      * 
      * This function doesnt return anything.
      */
-    public void deposit(double depositAmmount){
-        depositAmmount = round2dp(depositAmmount);
-        if(depositAmmount >= 0){
-            this.totalTransactions = round2dp(this.totalTransactions + depositAmmount);
-            this.balance = round2dp(this.balance + depositAmmount);
+    public void deposit(double depositAmount){
+        depositAmount = round2dp(depositAmount);
+        if(depositAmount >= 0){
+            this.totalTransactions = round2dp(this.totalTransactions + depositAmount);
+            this.balance = round2dp(this.balance + depositAmount);
         }else{
             System.out.println("your deposit is invalid");
         }
@@ -142,21 +142,21 @@ public class Account
 
     /**
 
-     * Takes a double as input (withdrawAmmount)
+     * Takes a double as input (withdrawAmount)
      * 
-     * Checkes the withdraw ammount is valid,
-     * if deposit ammount is valid changes balance with regard to withdraw ammount.
+     * Checks the withdraw amount is valid,
+     * if deposit amount is valid changes balance with regard to withdraw amount.
      * 
      * This function doesnt return anything.
      */
-    public void withdraw(double withdrawAmmount){
-        withdrawAmmount = round2dp(withdrawAmmount);
-        double i = this.balance - withdrawAmmount;
-        if(i > this.minBalance){
-            this.totalTransactions = round2dp(this.totalTransactions - withdrawAmmount);
-            this.balance = round2dp(this.balance - withdrawAmmount);
+    public void withdraw(double withdrawAmount){
+        withdrawAmount = round2dp(withdrawAmount);
+        double i = this.balance - withdrawAmount;
+        if(i >= this.minBalance){
+            this.totalTransactions = round2dp(this.totalTransactions - withdrawAmount);
+            this.balance = round2dp(this.balance - withdrawAmount);
         }else{
-            System.out.println("your withdrawal is invalid");
+            System.out.println("Insufficient funds");
         }
     }
 
