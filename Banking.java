@@ -97,19 +97,22 @@ public class Banking
     
      * Takes String input (name).
      * 
+     * This is the main loop when dealing with a customer that is already a member of the bank
+     * is has options like making a widrawal or deposit, 
+     * deleting account and going back to start.
      * 
-     * 
-     * 
+     * This function returns nothing.
      */
     public void memberTurn(String name){
         Scanner keyboard = new Scanner(System.in);
         boolean accountTurn = true;
-        System.out.print('\u000C');
         int account = findAccounts(name);
 
+        System.out.print('\u000C');
         System.out.println("Customer: " + name);
         System.out.println("\n===WARMING READ THE FOLLOWING LINES===\n\nThe customer should have valid identification e.g.\n(drivers lisence, passport, birth certificate)\nif they don't have any identification don't let them access the account\n\nWhat follows is the customers account number, to access the account the customer MUST know this number\nask for this number and if they don't know it dont allow them to acces the account\nenter anything to move on\n\nAccount Number: " + accounts.get(account).getAccNumber());
         keyboard.nextLine();
+        
         System.out.print('\u000C');
         while(accountTurn) {
             int action = checkInt("Customer: " + name + "\nAddress: " + accounts.get(account).getAddress() + "\nAccount Number: " + accounts.get(account).getAccNumber() + "\nAccount Type: " + accounts.get(account).getAccType() + "\nBalance: $" + accounts.get(account).getBalance() + "\n\nplease enter number corrsponding to the action the customer/you wants to do \n'1' make a withdrawal\n'2' make a deposit\n'3' close account\n'4' (Teller) start with new customer", 4);
@@ -129,7 +132,7 @@ public class Banking
                 case 3:
                     System.out.print('\u000C');
                     boolean verification = false;
-                    while(verification == false){
+                    while(verification == false){ // verification the customer wants their account deleted
                         System.out.println("===WARNING THIS WILL PERMINANTLY DELETE THE ACCOUNT===\n\nif the customer still wants to perminantly delete account enter 'yes'\nto go back enter 'no'");
                         String input = keyboard.nextLine();
                         switch(input){
@@ -163,9 +166,12 @@ public class Banking
 
      * Takes String input (name).
      * 
+     * This is the main loop when dealing with a customer that is not already a member of the bank.
+     * It asks if they would like to open an account,
+     * if they do then it takes them through the proccess of opening an account.
+     * If they dont then it takes the user back to the begining.
      * 
-     * 
-     * 
+     * This function returns nothing.
      */
     public void nonMemberTurn(String name){
         Scanner keyboard = new Scanner(System.in);
